@@ -17,58 +17,60 @@ signal enemy_killed(reward: int)
 
 var health: int
 var body: CharacterBody2D
-var sprite: Sprite2D
-var health_bar: ProgressBar
+
+# Scene references
+@onready var character_body = $CharacterBody2D
+@onready var health_bar_visual = $CharacterBody2D/HealthBar
+@onready var health_bar_bg = $CharacterBody2D/HealthBarBG
+@onready var enemy_visual = $CharacterBody2D/EnemyVisual
 
 func _ready() -> void:
 	health = max_health
 	progress_ratio = 0.0
 	
-	# Create visual representation
-	body = CharacterBody2D.new()
-	body.add_to_group("enemies")
-	add_child(body)
+	# Use the existing CharacterBody2D from the scene
+	body = character_body
 	
-	# Setup sprite
-	sprite = Sprite2D.new()
-	sprite.texture = preload("res://sprites/enemy.png")
-	sprite.modulate = enemy_color
-	sprite.scale = Vector2(enemy_scale, enemy_scale)
-	body.add_child(sprite)
+	# Ensure the body is in the enemies group
+	if body and not body.is_in_group("enemies"):
+		body.add_to_group("enemies")
 	
-	# Setup collision
-	var collision_shape = CollisionShape2D.new()
-	var shape = CircleShape2D.new()
-	shape.radius = 16 * enemy_scale
-	collision_shape.shape = shape
-	body.add_child(collision_shape)
-	
-	# Setup health bar
-	_setup_health_bar()
+	# Setup visuals based on enemy type
+	_setup_visuals()
+	_update_health_bar_visual()
 
-func _setup_health_bar():
-	health_bar = ProgressBar.new()
-	health_bar.size = Vector2(40 * enemy_scale, 6)
-	health_bar.position = Vector2(-20 * enemy_scale, -30 * enemy_scale)
-	health_bar.value = 100
-	health_bar.show_percentage = false
+func _setup_visuals() -> void:
+	# Update visual properties - can be overridden by subclasses
+	if enemy_visual:
+		# Scale the polygon
+		if enemy_scale != 1.0:
+			var scaled_polygon = PackedVector2Array()
+			for point in enemy_visual.polygon:
+				scaled_polygon.append(point * enemy_scale)
+			enemy_visual.polygon = scaled_polygon
 	
-	# Create custom style for health bar
-	var bg_style = StyleBoxFlat.new()
-	bg_style.bg_color = Color(0.2, 0.2, 0.2)
-	bg_style.border_width_top = 1
-	bg_style.border_width_bottom = 1
-	bg_style.border_width_left = 1
-	bg_style.border_width_right = 1
-	bg_style.border_color = Color(0, 0, 0)
-	
-	var fg_style = StyleBoxFlat.new()
-	fg_style.bg_color = Color(0, 1, 0)
-	
-	health_bar.add_theme_stylebox_override("background", bg_style)
-	health_bar.add_theme_stylebox_override("fill", fg_style)
-	
-	body.add_child(health_bar)
+	# Scale health bars
+	if health_bar_visual and health_bar_bg:
+		var bar_width = 60 * enemy_scale
+		health_bar_visual.size.x = bar_width
+		health_bar_bg.size.x = bar_width
+		health_bar_visual.position.x = -bar_width / 2
+		health_bar_bg.position.x = -bar_width / 2
+		health_bar_visual.position.y = -35 * enemy_scale
+		health_bar_bg.position.y = -35 * enemy_scale
+
+func _update_health_bar_visual():
+	if health_bar_visual:
+		var health_percentage = float(health) / float(max_health)
+		health_bar_visual.size.x = health_bar_bg.size.x * health_percentage
+		
+		# Change color based on health
+		if health_percentage > 0.6:
+			health_bar_visual.color = Color(0, 1, 0)  # Green
+		elif health_percentage > 0.3:
+			health_bar_visual.color = Color(1, 1, 0)  # Yellow
+		else:
+			health_bar_visual.color = Color(1, 0, 0)  # Red
 
 func _process(delta: float) -> void:
 	if not is_inside_tree():
@@ -78,7 +80,7 @@ func _process(delta: float) -> void:
 	progress += speed * delta
 	
 	# Update body position to match PathFollow2D
-	if body:
+	if body and is_instance_valid(body) and body.is_inside_tree():
 		body.global_position = global_position
 	
 	# Check if reached the end
@@ -97,19 +99,7 @@ func take_damage(damage: int) -> void:
 			ParticleManager.instance.spawn_blood_effect(global_position)
 	
 	# Update health bar
-	if health_bar:
-		var health_percentage = float(health) / float(max_health) * 100
-		health_bar.value = health_percentage
-		
-		# Change color based on health
-		var fg_style = health_bar.get_theme_stylebox("fill")
-		if fg_style is StyleBoxFlat:
-			if health_percentage > 50:
-				fg_style.bg_color = Color(0, 1, 0)
-			elif health_percentage > 25:
-				fg_style.bg_color = Color(1, 1, 0)
-			else:
-				fg_style.bg_color = Color(1, 0, 0)
+	_update_health_bar_visual()
 	
 	if health <= 0:
 		enemy_killed.emit(reward)
@@ -120,3 +110,6 @@ func get_current_health() -> int:
 
 func get_max_health() -> int:
 	return max_health
+
+func get_path_progress() -> float:
+	return progress

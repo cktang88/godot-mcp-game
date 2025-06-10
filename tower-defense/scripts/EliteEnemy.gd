@@ -8,7 +8,7 @@ func _ready() -> void:
 	speed = 80.0
 	reward = 20
 	damage_to_base = 2
-	enemy_color = Color(1.0, 0.5, 0.5)  # Light red
 	enemy_scale = 1.2
 	
+	# Call parent ready
 	super._ready()

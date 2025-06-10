@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/BaseEnemy.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_base"]
+size = Vector2(48, 48)
+
+[node name="BaseEnemy" type="PathFollow2D"]
+loop = false
+script = ExtResource("1")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." groups=["enemies"]]
+collision_layer = 1
+collision_mask = 1
+
+[node name="EnemyVisual" type="Polygon2D" parent="CharacterBody2D"]
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-18, -18, 18, -18, 18, 18, -18, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_base")
+
+[node name="HealthBarBG" type="ColorRect" parent="CharacterBody2D"]
+offset_left = -30.0
+offset_top = -35.0
+offset_right = 30.0
+offset_bottom = -27.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="HealthBar" type="ColorRect" parent="CharacterBody2D"]
+offset_left = -30.0
+offset_top = -35.0
+offset_right = 30.0
+offset_bottom = -27.0
+color = Color(0, 1, 0, 1)

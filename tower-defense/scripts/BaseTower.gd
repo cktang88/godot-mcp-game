@@ -28,6 +28,9 @@ func _ready():
 	# Add to towers group for collision detection
 	add_to_group("towers")
 	
+	# Set collision mask to detect layer 1 (enemies)
+	collision_mask = 1
+	
 	shoot_timer = $ShootTimer
 	shoot_timer.timeout.connect(_shoot)
 	

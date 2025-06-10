@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://scripts/TankEnemy.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/BaseEnemy.tscn" id="1_base"]
+[ext_resource type="Script" path="res://scripts/TankEnemy.gd" id="2_script"]
 
-[node name="TankEnemy" type="PathFollow2D"]
-script = ExtResource("1")
-rotates = false
+[node name="TankEnemy" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+
+[node name="EnemyVisual" parent="CharacterBody2D" index="0"]
+color = Color(0.7, 0.7, 1.0, 1)
+polygon = PackedVector2Array(-27, -27, 27, -27, 27, 27, -27, 27)
