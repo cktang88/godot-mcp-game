@@ -16,20 +16,42 @@ func _ready() -> void:
 	enemy_color = Color.WHITE
 	enemy_scale = 1.0
 	
-	# Use the scene's existing visuals instead of creating new ones
+	# Initialize health
 	health = max_health
 	progress_ratio = 0.0
 	
 	# Use the existing CharacterBody2D from the scene
 	body = character_body
-	body.add_to_group("enemies")
+	if body and not body.is_in_group("enemies"):
+		body.add_to_group("enemies")
 	
-	# Hide the programmatically created health bar since we have scene-based ones
+	# Update the polygon color to white for basic enemy
+	var polygon = body.get_node_or_null("EnemyVisual")
+	if polygon:
+		polygon.color = enemy_color
+	
+	# Don't call super._ready() to avoid creating duplicate visuals
 	_update_health_bar_visual()
 
 func _setup_health_bar():
 	# Override to prevent creating a new health bar since we use scene-based ones
 	pass
+
+func _process(delta: float) -> void:
+	if not is_inside_tree():
+		return
+		
+	# Move along the path
+	progress += speed * delta
+	
+	# Update body position to match PathFollow2D
+	if body:
+		body.global_position = global_position
+	
+	# Check if reached the end
+	if progress_ratio >= 1.0:
+		enemy_reached_end.emit()
+		queue_free()
 
 func _update_health_bar_visual():
 	if health_bar_visual:

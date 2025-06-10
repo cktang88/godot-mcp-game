@@ -90,15 +90,11 @@ func take_damage(damage: int) -> void:
 	health -= damage
 	
 	# Spawn blood particle effect
-	var particle_manager = get_node_or_null("/root/ParticleManager")
-	if not particle_manager and get_tree().root.has_node("Main"):
-		# Create particle manager if it doesn't exist
-		particle_manager = ParticleManager.new()
-		particle_manager.name = "ParticleManager"
-		get_tree().root.add_child(particle_manager)
-	
-	if particle_manager and ParticleManager.instance:
-		ParticleManager.instance.spawn_blood_effect(global_position)
+	var main = get_tree().root.get_node_or_null("Main")
+	if main:
+		var particle_manager = main.get_node_or_null("ParticleManager")
+		if particle_manager and ParticleManager.instance:
+			ParticleManager.instance.spawn_blood_effect(global_position)
 	
 	# Update health bar
 	if health_bar:

@@ -36,22 +36,23 @@ func _create_muzzle_flash_pool():
 
 func _create_blood_particles() -> GPUParticles2D:
 	var particles = GPUParticles2D.new()
-	particles.amount = 15
-	particles.lifetime = 0.5
+	particles.amount = 12
+	particles.lifetime = 0.3
 	particles.one_shot = true
 	particles.emitting = false
-	particles.local_coords = true
+	particles.local_coords = false  # Use global coordinates
+	particles.z_index = 10  # Ensure particles are on top
 	
 	# Create process material
 	var process_material = ParticleProcessMaterial.new()
 	
 	# Emission shape
 	process_material.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
-	process_material.emission_sphere_radius = 5.0
+	process_material.emission_sphere_radius = 3.0
 	
 	# Initial velocity
-	process_material.initial_velocity_min = 100.0
-	process_material.initial_velocity_max = 300.0
+	process_material.initial_velocity_min = 80.0
+	process_material.initial_velocity_max = 200.0
 	process_material.direction = Vector3(0, -1, 0)
 	process_material.spread = 45.0
 	
@@ -59,8 +60,8 @@ func _create_blood_particles() -> GPUParticles2D:
 	process_material.gravity = Vector3(0, 500, 0)
 	
 	# Scale
-	process_material.scale_min = 0.5
-	process_material.scale_max = 1.5
+	process_material.scale_min = 0.4
+	process_material.scale_max = 1.2
 	process_material.scale_curve = create_scale_curve()
 	
 	# Color
@@ -84,11 +85,12 @@ func _create_blood_particles() -> GPUParticles2D:
 
 func _create_muzzle_flash_particles() -> GPUParticles2D:
 	var particles = GPUParticles2D.new()
-	particles.amount = 8
-	particles.lifetime = 0.1
+	particles.amount = 12
+	particles.lifetime = 0.15
 	particles.one_shot = true
 	particles.emitting = false
-	particles.local_coords = true
+	particles.local_coords = false  # Use global coordinates
+	particles.z_index = 10  # Ensure particles are on top
 	
 	# Create process material
 	var process_material = ParticleProcessMaterial.new()
@@ -168,7 +170,7 @@ func create_flash_color_ramp() -> Gradient:
 
 func create_blood_texture() -> ImageTexture:
 	var image = Image.create(8, 8, false, Image.FORMAT_RGBA8)
-	image.fill(Color.WHITE)
+	image.fill(Color(0, 0, 0, 0))
 	
 	# Create a simple circle
 	for x in range(8):

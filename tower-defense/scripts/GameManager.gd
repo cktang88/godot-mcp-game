@@ -98,33 +98,9 @@ func _spawn_enemy():
 	var enemy_type = current_wave_config[wave_enemy_index]
 	var enemy_scene = enemy_scenes.get(enemy_type, enemy_scenes["basic"])
 	
-	# For now, use the basic enemy scene for all types until we create the other scenes
-	if enemy_type != "basic":
-		enemy_scene = enemy_scenes["basic"]
-	
 	var enemy = enemy_scene.instantiate()
 	var enemy_path = get_node("../EnemyPath")
 	enemy_path.add_child(enemy)
-	
-	# Apply type-specific properties if using basic scene as placeholder
-	if enemy_type != "basic" and enemy.has_method("_ready"):
-		match enemy_type:
-			"fast":
-				enemy.max_health = 30
-				enemy.speed = 150.0
-				enemy.reward = 5
-			"tank":
-				enemy.max_health = 150
-				enemy.speed = 50.0
-				enemy.reward = 25
-			"swarm":
-				enemy.max_health = 15
-				enemy.speed = 120.0
-				enemy.reward = 3
-			"elite":
-				enemy.max_health = 100
-				enemy.speed = 80.0
-				enemy.reward = 20
 	
 	enemy.enemy_reached_end.connect(_on_enemy_reached_end.bind(enemy))
 	enemy.enemy_killed.connect(_on_enemy_killed)

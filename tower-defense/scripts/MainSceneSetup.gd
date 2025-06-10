@@ -27,8 +27,8 @@ func _ready() -> void:
 	if enemy_path and ResourceLoader.exists("res://scripts/PathGenerator.gd"):
 		enemy_path.set_script(preload("res://scripts/PathGenerator.gd"))
 	
-	# Add ParticleManager to root
-	if not get_tree().root.has_node("ParticleManager"):
+	# Add ParticleManager to the Main scene instead of root
+	if not has_node("ParticleManager"):
 		var particle_manager = ParticleManager.new()
 		particle_manager.name = "ParticleManager"
-		get_tree().root.add_child(particle_manager)
+		add_child(particle_manager)
