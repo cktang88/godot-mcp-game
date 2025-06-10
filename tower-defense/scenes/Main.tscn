@@ -1,0 +1,188 @@
+[gd_scene load_steps=4 format=3 uid="uid://ej46nuc2i80u"]
+
+[ext_resource type="Script" uid="uid://bd3o830gpsrsy" path="res://scripts/GameManager.gd" id="1_elqb8"]
+[ext_resource type="Script" uid="uid://f77k5fid5tsp" path="res://scripts/UIController.gd" id="2_rvslj"]
+
+[sub_resource type="Curve2D" id="Curve2D_qnwvq"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -50, 360, 0, 0, 0, 0, 200, 360, 0, 0, 0, 0, 200, 200, 0, 0, 0, 0, 600, 200, 0, 0, 0, 0, 600, 500, 0, 0, 0, 0, 1000, 500, 0, 0, 0, 0, 1000, 360, 0, 0, 0, 0, 1330, 360)
+}
+point_count = 8
+
+[node name="Main" type="Node2D"]
+
+[node name="EnemyPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_qnwvq")
+
+[node name="PathLine" type="Line2D" parent="EnemyPath"]
+z_index = -1
+points = PackedVector2Array(-50, 360, 200, 360, 200, 200, 600, 200, 600, 500, 1000, 500, 1000, 360, 1330, 360)
+width = 24.0
+default_color = Color(0.8, 0.7, 0.4, 0.7)
+texture_mode = 1
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("1_elqb8")
+
+[node name="SpawnTimer" type="Timer" parent="GameManager"]
+wait_time = 2.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("2_rvslj")
+
+[node name="HUD" type="MarginContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="InfoPanel" type="PanelContainer" parent="UI/HUD"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Stats" type="HBoxContainer" parent="UI/HUD/InfoPanel"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="LivesLabel" type="Label" parent="UI/HUD/InfoPanel/Stats"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Lives: 20"
+
+[node name="GoldLabel" type="Label" parent="UI/HUD/InfoPanel/Stats"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Gold: 100"
+
+[node name="WaveLabel" type="Label" parent="UI/HUD/InfoPanel/Stats"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Wave: 0"
+
+[node name="ShopContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ShopPanel" type="PanelContainer" parent="UI/ShopContainer"]
+layout_mode = 2
+
+[node name="ShopHBox" type="HBoxContainer" parent="UI/ShopContainer/ShopPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ShopTitle" type="Label" parent="UI/ShopContainer/ShopPanel/ShopHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Shop:"
+vertical_alignment = 1
+
+[node name="BasicTowerButton" type="Button" parent="UI/ShopContainer/ShopPanel/ShopHBox"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Basic
+50g"
+autowrap_mode = 2
+
+[node name="SMGTowerButton" type="Button" parent="UI/ShopContainer/ShopPanel/ShopHBox"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "SMG
+75g"
+autowrap_mode = 2
+
+[node name="SniperTowerButton" type="Button" parent="UI/ShopContainer/ShopPanel/ShopHBox"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Sniper
+150g"
+autowrap_mode = 2
+
+[node name="ShotgunTowerButton" type="Button" parent="UI/ShopContainer/ShopPanel/ShopHBox"]
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Shotgun
+100g"
+autowrap_mode = 2
+
+[node name="WaveContainer" type="MarginContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_bottom = 80.0
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+
+[node name="WavePanel" type="PanelContainer" parent="UI/WaveContainer"]
+layout_mode = 2
+
+[node name="WaveVBox" type="VBoxContainer" parent="UI/WaveContainer/WavePanel"]
+layout_mode = 2
+
+[node name="NextWaveLabel" type="Label" parent="UI/WaveContainer/WavePanel/WaveVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Next Wave: 1"
+horizontal_alignment = 1
+
+[node name="StartWaveButton" type="Button" parent="UI/WaveContainer/WavePanel/WaveVBox"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Start Wave"
+
+[node name="TowerStatsPanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = 100.0
+
+[node name="StatsVBox" type="VBoxContainer" parent="UI/TowerStatsPanel"]
+layout_mode = 2
+
+[node name="TowerNameLabel" type="Label" parent="UI/TowerStatsPanel/StatsVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Tower Name"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="UI/TowerStatsPanel/StatsVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Enemies Killed: 0
+Total Damage: 0
+Shots Fired: 0"
+
+[node name="ButtonsHBox" type="HBoxContainer" parent="UI/TowerStatsPanel/StatsVBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="SellButton" type="Button" parent="UI/TowerStatsPanel/StatsVBox/ButtonsHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Sell (37g)"
+
+[node name="CloseButton" type="Button" parent="UI/TowerStatsPanel/StatsVBox/ButtonsHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Close"
+
+[node name="TowerPlacementArea" type="Area2D" parent="."]

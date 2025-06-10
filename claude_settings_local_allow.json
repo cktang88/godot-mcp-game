@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "godot-mcp": {
+      "command": "node",
+      "args": ["/Users/apache/github/godot-mcp-game/waefrebeorn-Godot-MCP/server/build/index.js"],
+      "env": {
+        "GODOT_PORT": "8080"
+      }
+    }
+  },
+  "allowedTools": [
+    "mcp__godot-mcp__create_node",
+    "mcp__godot-mcp__delete_node", 
+    "mcp__godot-mcp__update_node_property",
+    "mcp__godot-mcp__get_node_properties",
+    "mcp__godot-mcp__list_nodes",
+    "mcp__godot-mcp__create_script",
+    "mcp__godot-mcp__edit_script",
+    "mcp__godot-mcp__get_script",
+    "mcp__godot-mcp__create_script_template",
+    "mcp__godot-mcp__create_scene",
+    "mcp__godot-mcp__save_scene",
+    "mcp__godot-mcp__open_scene",
+    "mcp__godot-mcp__get_current_scene",
+    "mcp__godot-mcp__get_project_info",
+    "mcp__godot-mcp__create_resource",
+    "mcp__godot-mcp__execute_editor_script",
+    "mcp__godot-mcp__list_assets_by_type",
+    "mcp__godot-mcp__list_project_files",
+    "mcp__godot-mcp__get_full_scene_tree",
+    "mcp__godot-mcp__get_debug_output",
+    "mcp__godot-mcp__get_current_scene_structure",
+    "mcp__godot-mcp__ai_generate_script"
+  ]
+}
