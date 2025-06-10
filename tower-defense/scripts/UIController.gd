@@ -18,6 +18,11 @@ extends CanvasLayer
 @onready var sell_button = $TowerStatsPanel/StatsVBox/ButtonsHBox/SellButton
 @onready var close_button = $TowerStatsPanel/StatsVBox/ButtonsHBox/CloseButton
 
+# Time control references
+@onready var speed_1x_button = $TimeControlPanel/TimeHBox/Speed1xButton
+@onready var speed_2x_button = $TimeControlPanel/TimeHBox/Speed2xButton
+@onready var speed_4x_button = $TimeControlPanel/TimeHBox/Speed4xButton
+
 # Tower scenes
 var basic_tower_scene = preload("res://scenes/BasicTower.tscn")
 var smg_tower_scene = preload("res://scenes/SMGTower.tscn")
@@ -34,6 +39,8 @@ var tower_data = {
 
 # State
 var game_manager: Node
+var camera: Camera2D
+var time_controller: TimeController
 var is_placing_tower: bool = false
 var tower_preview: Node2D = null
 var current_tower_type: String = ""
@@ -43,6 +50,14 @@ var previously_selected_tower: BaseTower = null
 
 func _ready():
 	game_manager = get_node("../GameManager")
+	
+	# Camera will be created by MainSceneSetup, so we'll get it after a frame
+	call_deferred("_setup_camera")
+	
+	# Create and setup time controller using deferred call
+	time_controller = TimeController.new()
+	time_controller.name = "TimeController"
+	get_node("../").call_deferred("add_child", time_controller)
 	
 	# Connect signals
 	game_manager.lives_changed.connect(_on_lives_changed)
@@ -58,6 +73,9 @@ func _ready():
 	start_wave_button.pressed.connect(_on_start_wave_pressed)
 	sell_button.pressed.connect(_on_sell_tower_pressed)
 	close_button.pressed.connect(_on_close_stats_pressed)
+	
+	# Connect time control buttons if they exist
+	_setup_time_controls()
 	
 	# Initialize display
 	_on_lives_changed(game_manager.lives)
@@ -91,6 +109,10 @@ func _update_next_wave_info():
 		start_wave_button.text = "Start Wave"
 
 func _on_game_over():
+	# Reset time scale
+	if time_controller:
+		time_controller.set_normal_speed()
+	
 	# Create game over screen
 	var game_over_container = CenterContainer.new()
 	game_over_container.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -153,17 +175,25 @@ func _process(_delta):
 
 func _unhandled_input(event):
 	if is_placing_tower and tower_preview:
-		if event is InputEventMouseMotion:
-			tower_preview.global_position = event.position
+		if event is InputEventMouseMotion or event is InputEventMouseButton:
+			# Convert screen position to world position using camera
+			var world_pos = get_viewport().canvas_transform.affine_inverse() * event.position
+			if camera:
+				world_pos = camera.get_global_mouse_position()
+			
+			tower_preview.global_position = world_pos
 			# Update color based on validity
-			if _is_valid_placement(event.position):
+			if _is_valid_placement(world_pos):
 				tower_preview.modulate = Color(0.5, 1, 0.5, 0.7)  # Green tint
 			else:
 				tower_preview.modulate = Color(1, 0.5, 0.5, 0.7)  # Red tint
-				
-		elif event.is_action_pressed("place_tower"):
-			if _is_valid_placement(event.position):
-				_place_tower(event.position)
+		
+		if event.is_action_pressed("place_tower"):
+			var world_pos = get_viewport().canvas_transform.affine_inverse() * event.position
+			if camera:
+				world_pos = camera.get_global_mouse_position()
+			if _is_valid_placement(world_pos):
+				_place_tower(world_pos)
 					
 		elif event.is_action_pressed("cancel_placement"):
 			_cancel_placement()
@@ -285,3 +315,80 @@ func _on_close_stats_pressed():
 	selected_tower = null
 	previously_selected_tower = null
 	tower_stats_panel.visible = false
+
+func _setup_camera():
+	camera = get_node_or_null("../Camera2D")
+	if not camera:
+		print("Warning: Camera2D not found")
+
+func _setup_time_controls():
+	# Create time control panel if it doesn't exist
+	if not has_node("TimeControlPanel"):
+		var time_panel = PanelContainer.new()
+		time_panel.name = "TimeControlPanel"
+		time_panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+		time_panel.position = Vector2(-200, 160)  # Moved further down to avoid overlap with wave panel
+		time_panel.size = Vector2(180, 50)
+		
+		# Add custom style
+		var panel_style = StyleBoxFlat.new()
+		panel_style.bg_color = Color(0.15, 0.15, 0.15, 0.9)
+		panel_style.border_width_left = 2
+		panel_style.border_width_right = 2
+		panel_style.border_width_top = 2
+		panel_style.border_width_bottom = 2
+		panel_style.border_color = Color(0.3, 0.3, 0.3)
+		panel_style.corner_radius_top_left = 5
+		panel_style.corner_radius_top_right = 5
+		panel_style.corner_radius_bottom_left = 5
+		panel_style.corner_radius_bottom_right = 5
+		time_panel.add_theme_stylebox_override("panel", panel_style)
+		
+		var hbox = HBoxContainer.new()
+		hbox.name = "TimeHBox"
+		hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+		time_panel.add_child(hbox)
+		
+		# Create speed buttons
+		var speed_1x = Button.new()
+		speed_1x.name = "Speed1xButton"
+		speed_1x.text = "1x"
+		speed_1x.custom_minimum_size = Vector2(50, 40)
+		speed_1x.pressed.connect(_on_speed_1x_pressed)
+		hbox.add_child(speed_1x)
+		speed_1x_button = speed_1x
+		
+		var speed_2x = Button.new()
+		speed_2x.name = "Speed2xButton"
+		speed_2x.text = "2x"
+		speed_2x.custom_minimum_size = Vector2(50, 40)
+		speed_2x.pressed.connect(_on_speed_2x_pressed)
+		hbox.add_child(speed_2x)
+		speed_2x_button = speed_2x
+		
+		var speed_4x = Button.new()
+		speed_4x.name = "Speed4xButton"
+		speed_4x.text = "4x"
+		speed_4x.custom_minimum_size = Vector2(50, 40)
+		speed_4x.pressed.connect(_on_speed_4x_pressed)
+		hbox.add_child(speed_4x)
+		speed_4x_button = speed_4x
+		
+		add_child(time_panel)
+	
+	# Register buttons with time controller
+	if speed_1x_button:
+		time_controller.register_speed_button(1.0, speed_1x_button)
+	if speed_2x_button:
+		time_controller.register_speed_button(2.0, speed_2x_button)
+	if speed_4x_button:
+		time_controller.register_speed_button(4.0, speed_4x_button)
+
+func _on_speed_1x_pressed():
+	time_controller.set_normal_speed()
+
+func _on_speed_2x_pressed():
+	time_controller.set_fast_speed()
+
+func _on_speed_4x_pressed():
+	time_controller.set_very_fast_speed()

@@ -1,73 +1,52 @@
-extends PathFollow2D
+extends BaseEnemy
 
-# Enemy properties
-@export var max_health: int = 50
-@export var speed: float = 100.0
-@export var reward: int = 10
+class_name BasicEnemy
 
-# Current state
-var health: int
-var is_dead: bool = false
-
-# References
+# Scene-based enemy with predefined visuals
 @onready var character_body = $CharacterBody2D
-@onready var health_bar = $CharacterBody2D/HealthBar
+@onready var health_bar_visual = $CharacterBody2D/HealthBar
 @onready var health_bar_bg = $CharacterBody2D/HealthBarBG
 
-# Signals
-signal enemy_reached_end()
-signal enemy_killed(reward: int)
-
-func _ready():
+func _ready() -> void:
+	# Basic enemy stats
+	max_health = 50
+	speed = 100.0
+	reward = 10
+	damage_to_base = 1
+	enemy_color = Color.WHITE
+	enemy_scale = 1.0
+	
+	# Use the scene's existing visuals instead of creating new ones
 	health = max_health
 	progress_ratio = 0.0
-	_update_health_bar()
 	
-	# Add CharacterBody2D to enemies group for tower detection
-	character_body.add_to_group("enemies")
+	# Use the existing CharacterBody2D from the scene
+	body = character_body
+	body.add_to_group("enemies")
+	
+	# Hide the programmatically created health bar since we have scene-based ones
+	_update_health_bar_visual()
 
-func _physics_process(delta):
-	if is_dead:
-		return
-	
-	# Move along the path
-	progress += speed * delta
-	
-	# Check if reached the end
-	if progress_ratio >= 1.0:
-		is_dead = true  # Prevent further processing
-		enemy_reached_end.emit()
-		queue_free()
+func _setup_health_bar():
+	# Override to prevent creating a new health bar since we use scene-based ones
+	pass
 
-func take_damage(damage: int):
-	if is_dead:
-		return
-	
-	health -= damage
-	_update_health_bar()
-	
-	if health <= 0:
-		_die()
-
-func _update_health_bar():
-	if health_bar:
+func _update_health_bar_visual():
+	if health_bar_visual:
 		var health_percentage = float(health) / float(max_health)
-		health_bar.size.x = 60 * health_percentage
+		health_bar_visual.size.x = 60 * health_percentage
 		
 		# Change color based on health
 		if health_percentage > 0.6:
-			health_bar.color = Color(0, 1, 0)  # Green
+			health_bar_visual.color = Color(0, 1, 0)  # Green
 		elif health_percentage > 0.3:
-			health_bar.color = Color(1, 1, 0)  # Yellow
+			health_bar_visual.color = Color(1, 1, 0)  # Yellow
 		else:
-			health_bar.color = Color(1, 0, 0)  # Red
+			health_bar_visual.color = Color(1, 0, 0)  # Red
 
-func _die():
-	if is_dead:  # Already processed (might have reached end)
-		return
-	is_dead = true
-	enemy_killed.emit(reward)
-	queue_free()
+func take_damage(damage: int) -> void:
+	super.take_damage(damage)
+	_update_health_bar_visual()
 
 func get_path_progress() -> float:
 	return progress

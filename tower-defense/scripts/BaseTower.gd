@@ -105,6 +105,7 @@ func _shoot():
 	
 	shots_fired += 1
 	_create_projectile()
+	_spawn_muzzle_flash()
 
 # Virtual method for subclasses to override projectile creation
 func _create_projectile():
@@ -123,6 +124,29 @@ func _create_projectile():
 	# Calculate direction to target
 	var direction = (current_target.global_position - global_position).normalized()
 	projectile.initialize(direction, damage, projectile_speed, self)
+
+func _spawn_muzzle_flash():
+	# Get or create particle manager
+	var particle_manager = get_node_or_null("/root/ParticleManager")
+	if not particle_manager and get_tree().root.has_node("Main"):
+		particle_manager = ParticleManager.new()
+		particle_manager.name = "ParticleManager"
+		get_tree().root.add_child(particle_manager)
+	
+	if particle_manager and ParticleManager.instance:
+		var barrel = $TowerBarrel
+		var flash_position: Vector2
+		var flash_direction: Vector2
+		
+		if barrel:
+			# Use the barrel's up direction for muzzle flash position
+			flash_position = barrel.global_position + barrel.transform.y * -30
+			flash_direction = -barrel.transform.y  # Barrel points up, so negative Y is forward
+		else:
+			flash_position = global_position
+			flash_direction = (current_target.global_position - global_position).normalized()
+		
+		ParticleManager.instance.spawn_muzzle_flash(flash_position, flash_direction)
 
 func _on_tower_clicked(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

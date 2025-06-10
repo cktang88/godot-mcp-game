@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ej46nuc2i80u"]
+[gd_scene load_steps=5 format=3 uid="uid://ej46nuc2i80u"]
 
 [ext_resource type="Script" uid="uid://bd3o830gpsrsy" path="res://scripts/GameManager.gd" id="1_elqb8"]
+[ext_resource type="Script" uid="uid://cjqlr4rg63vto" path="res://scripts/MainSceneSetup.gd" id="1_setup"]
 [ext_resource type="Script" uid="uid://f77k5fid5tsp" path="res://scripts/UIController.gd" id="2_rvslj"]
 
 [sub_resource type="Curve2D" id="Curve2D_qnwvq"]
@@ -10,6 +11,7 @@ _data = {
 point_count = 8
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_setup")
 
 [node name="EnemyPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_qnwvq")
@@ -184,5 +186,3 @@ text = "Sell (37g)"
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Close"
-
-[node name="TowerPlacementArea" type="Area2D" parent="."]
