@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://dpxf8qjjnm4qg"]
+
+[ext_resource type="Script" path="res://entities/Actor.gd" id="1_3lfqe"]
+[ext_resource type="PackedScene" uid="uid://healthbar123abc" path="res://ui/HealthBar.tscn" id="2_healthbar"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1mtke"]
+size = Vector2(32, 48)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1x5wj"]
+size = Vector2(32, 48)
+
+[node name="Actor" type="CharacterBody2D"]
+script = ExtResource("1_3lfqe")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_1x5wj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1mtke")
+
+[node name="HealthBar" parent="." instance=ExtResource("2_healthbar")]

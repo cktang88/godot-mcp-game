@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://smg123abc"]
+
+[ext_resource type="PackedScene" uid="uid://bweapon123abc" path="res://entities/weapons/BaseWeapon.tscn" id="1_weapon"]
+[ext_resource type="Script" path="res://entities/weapons/SMG.gd" id="2_smg"]
+
+[node name="SMG" instance=ExtResource("1_weapon")]
+script = ExtResource("2_smg")
+weapon_name = "SMG"
+max_ammo = 25
+damage = 15
+fire_rate = 0.08
+reload_time = 2.0
+projectile_speed = 1100.0
+spread_angle = 5.0
+range_distance = 800.0
+auto_fire = true
+projectile_color = Color(1, 0.7, 0.3, 1)
+
+[node name="WeaponSprite" parent="." index="0"]
+modulate = Color(0.6, 0.4, 0.8, 1)

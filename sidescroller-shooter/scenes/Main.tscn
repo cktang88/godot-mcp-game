@@ -1,0 +1,416 @@
+[gd_scene load_steps=7 format=3 uid="uid://main123scene"]
+
+[ext_resource type="Script" path="res://scenes/MainScene.gd" id="1_mainscene"]
+[ext_resource type="PackedScene" uid="uid://cn2y3h8ldp7kl" path="res://entities/player/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://globals/GameManager.gd" id="3_gamemanager"]
+[ext_resource type="Script" path="res://ui/UIController.gd" id="4_ui"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(5000, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(200, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_vertical"]
+size = Vector2(50, 2000)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_horizontal"]
+size = Vector2(5000, 50)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_cursor"]
+size = Vector2(16, 16)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_mainscene")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("3_gamemanager")
+
+[node name="EnemySpawnTimer" type="Timer" parent="GameManager"]
+
+[node name="Level" type="Node2D" parent="."]
+
+[node name="Ground" type="StaticBody2D" parent="Level"]
+position = Vector2(0, 500)
+collision_layer = 8
+
+[node name="GroundSprite" type="ColorRect" parent="Level/Ground"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2500.0
+offset_top = -50.0
+offset_right = 2500.0
+offset_bottom = 50.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="GroundCollision" type="CollisionShape2D" parent="Level/Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Platform1" type="StaticBody2D" parent="Level"]
+position = Vector2(300, 364)
+collision_layer = 8
+
+[node name="PlatformSprite1" type="ColorRect" parent="Level/Platform1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision1" type="CollisionShape2D" parent="Level/Platform1"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Platform2" type="StaticBody2D" parent="Level"]
+position = Vector2(600, 244)
+collision_layer = 8
+
+[node name="PlatformSprite2" type="ColorRect" parent="Level/Platform2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision2" type="CollisionShape2D" parent="Level/Platform2"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Platform3" type="StaticBody2D" parent="Level"]
+position = Vector2(-300, 364)
+collision_layer = 8
+
+[node name="PlatformSprite3" type="ColorRect" parent="Level/Platform3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision3" type="CollisionShape2D" parent="Level/Platform3"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Platform4" type="StaticBody2D" parent="Level"]
+position = Vector2(-600, 244)
+collision_layer = 8
+
+[node name="PlatformSprite4" type="ColorRect" parent="Level/Platform4"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision4" type="CollisionShape2D" parent="Level/Platform4"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Platform5" type="StaticBody2D" parent="Level"]
+position = Vector2(0, 124)
+collision_layer = 8
+
+[node name="PlatformSprite5" type="ColorRect" parent="Level/Platform5"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision5" type="CollisionShape2D" parent="Level/Platform5"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Platform6" type="StaticBody2D" parent="Level"]
+position = Vector2(900, 364)
+collision_layer = 8
+
+[node name="PlatformSprite6" type="ColorRect" parent="Level/Platform6"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision6" type="CollisionShape2D" parent="Level/Platform6"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Platform7" type="StaticBody2D" parent="Level"]
+position = Vector2(-900, 364)
+collision_layer = 8
+
+[node name="PlatformSprite7" type="ColorRect" parent="Level/Platform7"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -16.0
+offset_right = 100.0
+offset_bottom = 16.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PlatformCollision7" type="CollisionShape2D" parent="Level/Platform7"]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="LeftWall" type="StaticBody2D" parent="Level"]
+position = Vector2(-2500, 0)
+collision_layer = 8
+
+[node name="LeftWallSprite" type="ColorRect" parent="Level/LeftWall"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -1000.0
+offset_right = 25.0
+offset_bottom = 1000.0
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="LeftWallCollision" type="CollisionShape2D" parent="Level/LeftWall"]
+shape = SubResource("RectangleShape2D_wall_vertical")
+
+[node name="RightWall" type="StaticBody2D" parent="Level"]
+position = Vector2(2500, 0)
+collision_layer = 8
+
+[node name="RightWallSprite" type="ColorRect" parent="Level/RightWall"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -1000.0
+offset_right = 25.0
+offset_bottom = 1000.0
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="RightWallCollision" type="CollisionShape2D" parent="Level/RightWall"]
+shape = SubResource("RectangleShape2D_wall_vertical")
+
+[node name="TopWall" type="StaticBody2D" parent="Level"]
+position = Vector2(0, -1000)
+collision_layer = 8
+
+[node name="TopWallSprite" type="ColorRect" parent="Level/TopWall"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2500.0
+offset_top = -25.0
+offset_right = 2500.0
+offset_bottom = 25.0
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="TopWallCollision" type="CollisionShape2D" parent="Level/TopWall"]
+shape = SubResource("RectangleShape2D_wall_horizontal")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(0, 476)
+
+[node name="AimCursor" type="Node2D" parent="."]
+
+[node name="CursorSprite" type="Sprite2D" parent="AimCursor"]
+texture = SubResource("PlaceholderTexture2D_cursor")
+modulate = Color(1, 0, 0, 0.8)
+z_index = 100
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("4_ui")
+
+[node name="HealthBar" type="ProgressBar" parent="UILayer/UI"]
+layout_mode = 0
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 320.0
+offset_bottom = 50.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="UILayer/UI/HealthBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -11.5
+offset_right = 50.0
+offset_bottom = 11.5
+text = "100/100"
+horizontal_alignment = 1
+
+[node name="WeaponPanel" type="Panel" parent="UILayer/UI"]
+layout_mode = 0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 150.0
+
+[node name="WeaponLabel" type="Label" parent="UILayer/UI/WeaponPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 35.0
+text = "Pistol"
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="AmmoLabel" type="Label" parent="UILayer/UI/WeaponPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 40.0
+offset_right = 250.0
+offset_bottom = 65.0
+text = "Ammo: 30/30"
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.9, 0.9, 1, 1)
+
+[node name="ReloadLabel" type="Label" parent="UILayer/UI/WeaponPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 70.0
+offset_right = 250.0
+offset_bottom = 95.0
+text = ""
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+
+[node name="ReloadProgressBar" type="ProgressBar" parent="UILayer/UI/WeaponPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 100.0
+offset_right = 310.0
+offset_bottom = 120.0
+max_value = 100.0
+value = 0.0
+show_percentage = false
+visible = false
+
+[node name="ControlsHint" type="Label" parent="UILayer/UI"]
+layout_mode = 0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -80.0
+offset_right = -20.0
+offset_bottom = -20.0
+text = "Controls: Q/E - Switch Weapons | R - Reload
+Space - Jump | Mouse - Aim & Shoot"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 0.7)
+
+[node name="ScoreLabel" type="Label" parent="UILayer/UI"]
+layout_mode = 0
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 220.0
+offset_bottom = 86.0
+text = "Score: 0"
+horizontal_alignment = 0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="GameOverPanel" type="Panel" parent="UILayer/UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+
+[node name="GameOverLabel" type="Label" parent="UILayer/UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -40.0
+offset_right = 150.0
+offset_bottom = 20.0
+text = "Game Over!
+Final Score: 0"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="UILayer/UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 30.0
+offset_right = 60.0
+offset_bottom = 70.0
+text = "Restart"

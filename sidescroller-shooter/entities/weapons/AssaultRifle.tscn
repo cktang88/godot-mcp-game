@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4ddax1iqwbyq"]
+
+[ext_resource type="PackedScene" uid="uid://bweapon123abc" path="res://entities/weapons/BaseWeapon.tscn" id="1_weapon"]
+[ext_resource type="Script" uid="uid://dee8ue8aiiv2y" path="res://entities/weapons/AssaultRifle.gd" id="2_assault"]
+
+[node name="AssaultRifle" instance=ExtResource("1_weapon")]
+script = ExtResource("2_assault")
+weapon_name = "Assault Rifle"
+damage = 20
+fire_rate = 0.15
+reload_time = 2.5
+projectile_speed = 1400.0
+spread_angle = 3.0
+range_distance = 1500.0
+auto_fire = true
+projectile_color = Color(0.9, 1, 1, 1)
+
+[node name="WeaponSprite" parent="." index="0"]
+modulate = Color(0.4, 0.6, 0.4, 1)

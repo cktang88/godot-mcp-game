@@ -11,21 +11,6 @@ This is a multi-project repository containing Godot MCP (Model Context Protocol)
 - **tower-defense/**: Tower defense game using MCP addon
 - **godot-docs/**: Official Godot Engine 4.4.1 documentation - **ALWAYS consult these for best practices, API reference, and proper implementation patterns**
 
-## Build & Development Commands
-
-### MCP Server (TypeScript)
-
-```bash
-# For waefrebeorn-Godot-MCP
-cd waefrebeorn-Godot-MCP/server && npm install && npm run build
-
-# Development mode (auto-rebuild)
-cd {project}/server && npm run dev
-
-# Production server
-cd {project}/server && npm run start
-```
-
 ### Godot Projects
 
 - Open `project.godot` files directly in Godot Engine 4.4.1
@@ -42,22 +27,67 @@ cd {project}/server && npm run start
 3. **Godot** processes commands through addon system
 4. **Responses** flow back through the same chain
 
-### Technology Stack
-
-- **Frontend**: Godot Engine 4.4.1 with GDScript
-- **Backend**: TypeScript/Node.js with FastMCP library
-- **Communication**: WebSocket (ws library) + MCP protocol
-- **Validation**: Zod schemas
-
 ## Code Style Guidelines
 
-### TypeScript (MCP Server)
+### File Organization in Godot projects
 
-- **camelCase** for variables/methods/functions
-- **PascalCase** for classes/interfaces
-- Strong typing preferred (avoid `any`)
-- async/await over Promise chains
-- Import structure: Node modules first, then local modules
+- in Godot projects, group files by FUNCTION, not file type. Related files should be in the same folder.
+- use PascalCase for scenes and scripts names, and snake_case for other files and folders.
+
+- Example hierarchy:
+
+```
+/
+    entities/
+        player/
+            player.tscn
+            player.gd
+        enemies/
+            generic_enemy.gd
+            enemy.tscn #base scene to be overridden
+            boss_enemy.gd
+            boss.tscn #base scene to be overridden
+        actor.tscn
+        actor.tres
+        actor.gd
+    globals/ #used as autoloads
+        notifications.tscn
+        lobby.tscn
+        serialization.tscn
+    menus/ #for scenes that are used standalone 2d menus, or popups
+        title/
+            title.tscn
+            font_title.tres
+    ui/ #for any assets related to UI that are reused
+        theme_default/
+            assets/
+                [...] #generally pngs for interface
+            theme_default.tres
+        font_uidefault.tres
+        cool_font.ttf
+    scenes/ #scenes where a player will probably be instantiated
+         common/
+             assets/
+                 [...]
+             prefabs/ #premade designs for inclusion in a level elsewhere
+                 [...].tscn
+             common_gridmap.tres
+         main/
+             assets/
+                 [...]
+             main.tscn
+             [...]
+         overworld/
+             assets/
+                 [...]
+             overworld.tscn
+             [...]
+         dungeon/
+             assets/
+                 [...]
+             dungeon.tscn
+             [...]
+```
 
 ### GDScript (Godot)
 
@@ -107,18 +137,11 @@ cd {project}/server && npm run start
 
 ### Tower Defense
 
-- **Resolution**: 1280x720
+- **Resolution**: 2560x1440
 - **Input**: Mouse-based (left click place tower, right click cancel)
 - **Architecture**: Tower, Enemy, Projectile classes with UIController
 
 ## Working with MCP Projects
-
-### When editing MCP server code:
-
-1. Check which implementation (original vs enhanced fork)
-2. Use appropriate project directory
-3. Run `npm run build` after TypeScript changes
-4. Test with `npm run dev` for auto-reload
 
 ### When editing Godot scripts:
 
@@ -134,13 +157,6 @@ cd {project}/server && npm run start
 4. Verify WebSocket communication in Godot console
 
 ## Common Development Patterns
-
-### Adding New MCP Commands:
-
-1. Define tool in `server/src/tools/`
-2. Add resource endpoint in `server/src/resources/` (if needed)
-3. Implement GDScript handler in `addons/godot_mcp/commands/`
-4. Register in appropriate command processor
 
 ### Creating Game Objects:
 

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bweapon123abc"]
+
+[ext_resource type="Script" path="res://entities/weapons/BaseWeapon.gd" id="1_weapon"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_weapon"]
+size = Vector2(32, 8)
+
+[node name="BaseWeapon" type="Node2D"]
+script = ExtResource("1_weapon")
+
+[node name="WeaponSprite" type="Sprite2D" parent="."]
+position = Vector2(16, 0)
+texture = SubResource("PlaceholderTexture2D_weapon")
+
+[node name="FirePoint" type="Marker2D" parent="."]
+position = Vector2(32, 0)
+
+[node name="FireTimer" type="Timer" parent="."]
+
+[node name="ReloadTimer" type="Timer" parent="."]

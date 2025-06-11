@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://pistol123abc"]
+
+[ext_resource type="PackedScene" uid="uid://bweapon123abc" path="res://entities/weapons/BaseWeapon.tscn" id="1_weapon"]
+[ext_resource type="Script" path="res://entities/weapons/Pistol.gd" id="2_pistol"]
+
+[node name="Pistol" instance=ExtResource("1_weapon")]
+script = ExtResource("2_pistol")
+weapon_name = "Pistol"
+max_ammo = 12
+damage = 25
+fire_rate = 0.4
+reload_time = 1.5
+projectile_speed = 1200.0
+spread_angle = 2.0
+range_distance = 1200.0
+auto_fire = false
+projectile_color = Color(1, 1, 0.5, 1)
+
+[node name="WeaponSprite" parent="." index="0"]
+modulate = Color(0.8, 0.8, 0.8, 1)

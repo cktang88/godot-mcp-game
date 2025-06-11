@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://bl4ku6e3qmyap"]
+
+[ext_resource type="PackedScene" uid="uid://dpxf8qjjnm4qg" path="res://entities/Actor.tscn" id="1_7xk3l"]
+[ext_resource type="Script" path="res://entities/enemies/Enemy.gd" id="2_pxk8m"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1x5wj"]
+size = Vector2(32, 48)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1mtke"]
+radius = 300.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2mtke"]
+radius = 150.0
+
+[node name="Enemy" instance=ExtResource("1_7xk3l")]
+script = ExtResource("2_pxk8m")
+collision_layer = 2
+collision_mask = 9
+max_health = 80
+move_speed = 200.0
+
+[node name="Sprite2D" parent="." index="0"]
+modulate = Color(0.8, 0.2, 0.2, 1)
+texture = SubResource("PlaceholderTexture2D_1x5wj")
+
+[node name="WeaponMount" type="Node2D" parent="." index="2"]
+position = Vector2(16, 0)
+
+[node name="DetectionArea" type="Area2D" parent="." index="3"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" index="0"]
+shape = SubResource("CircleShape2D_1mtke")
+
+[node name="AttackArea" type="Area2D" parent="." index="4"]
+collision_layer = 0
+collision_mask = 1
+
+[node name="AttackShape" type="CollisionShape2D" parent="AttackArea" index="0"]
+shape = SubResource("CircleShape2D_2mtke")
+
+[node name="SightRay" type="RayCast2D" parent="." index="5"]
+target_position = Vector2(300, 0)
+collision_mask = 15

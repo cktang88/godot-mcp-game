@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqyh4jlr7tos7"]
+
+[ext_resource type="PackedScene" uid="uid://bweapon123abc" path="res://entities/weapons/BaseWeapon.tscn" id="1_weapon"]
+[ext_resource type="Script" path="res://entities/weapons/MachineGun.gd" id="2_machine"]
+
+[node name="MachineGun" instance=ExtResource("1_weapon")]
+script = ExtResource("2_machine")
+weapon_name = "Machine Gun"
+max_ammo = 100
+damage = 18
+fire_rate = 0.05
+reload_time = 4.0
+projectile_speed = 1300.0
+spread_angle = 8.0
+range_distance = 1000.0
+auto_fire = true
+projectile_color = Color(1, 0.3, 0.3, 1)
+
+[node name="WeaponSprite" parent="." index="0"]
+modulate = Color(0.8, 0.4, 0.4, 1)
