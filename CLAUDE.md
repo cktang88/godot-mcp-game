@@ -11,12 +11,17 @@ This is a multi-project repository containing Godot MCP (Model Context Protocol)
 - **tower-defense/**: Tower defense game using MCP addon
 - **godot-docs/**: Official Godot Engine 4.4.1 documentation - **ALWAYS consult these for best practices, API reference, and proper implementation patterns**
 
+### IMPORTANT NOTE:
+
+Before beginning any implementation in a Godot game, always check the godot-docs/ for the official documentation and best practices.
+Especially @./godot-docs/classes for specific classes and prebuilt stuff to use. Try to avoid hand coding stuff from scratch that is already implemented natively in Godot.
+
 ### Godot Projects
 
 - Open `project.godot` files directly in Godot Engine 4.4.1
 - All projects have MCP plugin pre-enabled
 - Use Godot's built-in run/debug system
-- **Reference godot-docs/ for official documentation and best practices**
+- **Reference @./godot-docs/ for official documentation and best practices**
 
 ## Architecture Overview
 
@@ -96,7 +101,7 @@ This is a multi-project repository containing Godot MCP (Model Context Protocol)
 - Type hints encouraged: `var player: Player`
 - Signals preferred for node communication
 - Follow Godot singleton conventions
-- **Consult godot-docs/ for official GDScript best practices and API usage**
+- **Consult @./godot-docs/ for official GDScript best practices and API usage**
 
 ## Key Capabilities
 
